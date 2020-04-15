@@ -28,12 +28,11 @@ timelapse() #timelapse
     sudo rm -f files.txt;
     sudo touch files.txt;
     sudo chmod 777 files.txt;
-    sudo ls p*.jpeg | sort -V | sed "s/^/file '/;s/$/'/" > files.txt #this sorting took forever, it sorts it perfectly
+    sudo find . -type f -name 'p*.jpeg' | cut -c 3- | sort -V | sed "s/^/file '/;s/$/'/" > files.txt #this sorting took forever, it sorts it perfectly
     #sudo mkdir build;
     #echo "Rotating images";
     #sudo find *.jpeg -type f -print | xargs -I {} convert {} -rotate 90 build/{};
     echo "Building combined mp4; this might take a while";
-    sudo rm -f timeLapse.h264;
     sudo rm -f timeLapse.mp4;
     sudo ffmpeg -f concat -i files.txt -r 60 -s 1920x1080 -vcodec libx264 -crf 15 -pix_fmt yuv420p timeLapse.mp4; #create timelapse (high quality)
     #sudo ffmpeg -f concat -i files.txt -r 30 -s hd480 -vcodec mpeg4 timeLapse.mp4; #create timelapse (lower quality)
