@@ -15,7 +15,7 @@ abort() #aborts script
 snap() #snaps photo
 {
     photoDir="p$photoNumber.jpeg";
-    echo "Capturing photo# $photoNumber to directory $photoDir"
+    echo "Capturing photo# $photoNumber as file $photoDir"
     photoNumber=$((photoNumber + 1))
     sudo curl -s $photoPath -o $photoDir
 }
@@ -35,8 +35,8 @@ timelapse() #timelapse
     echo "Building combined mp4; this might take a while";
     sudo rm -f timeLapse.h264;
     sudo rm -f timeLapse.mp4;
-    sudo ffmpeg -f concat -i files.txt -r 30 -s hd480 -vcodec libx264 timeLapse.h264; #create timelapse (high quality)
-    sudo ffmpeg -f concat -i files.txt -r 30 -s hd480 -vcodec mpeg4 timeLapse.mp4; #create timelapse (lower quality)
+    sudo ffmpeg -f concat -i files.txt -r 60 -s 1920x1080 -vcodec libx264 -crf 15 -pix_fmt yuv420p timeLapse.mp4; #create timelapse (high quality)
+    #sudo ffmpeg -f concat -i files.txt -r 30 -s hd480 -vcodec mpeg4 timeLapse.mp4; #create timelapse (lower quality)
     #sudo rm -r build;
 }
 
@@ -54,7 +54,7 @@ echo "Aaron's AutoSnap Tool for MJPG" && echo "------------------------------";
 DATE=`date '+%Y-%m-%d:%H-%M-%S'`
 picDir="capturedOutput@$DATE";
 photoNumber=1;
-photoPath="http://aaronyun.local:8080/?action=snapshot"
+photoPath="http://octopi.local/webcam/?action=snapshot"
 echo "Writing to directory: $picDir";
 
 sudo mkdir $picDir;
